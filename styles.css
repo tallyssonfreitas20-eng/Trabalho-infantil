@@ -469,3 +469,11 @@ a { color: var(--marian); }
 @keyframes pop { 50% { transform: scale(1.12); } }
 @media (max-width: 720px) { .pf-grid { grid-template-columns: 1fr; } .pf-tag { right: 4px; } .pf-big strong { font-size: 2.5rem; } }
 @media (prefers-reduced-motion: reduce) { .pf-pup, .pf-tag { animation: none !important; opacity: 1; transform: none; } .pf-cost li { opacity: 1; transform: none; } }
+
+/* Botões pulsando */
+@keyframes ctapulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(163,48,43,.45); } 50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(163,48,43,0); } }
+@keyframes ctapulse2 { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(176,138,69,.5); } 50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(176,138,69,0); } }
+.btn-primary, .btn-red, .btn-outline { animation: ctapulse 1.8s ease-in-out infinite; }
+.btn-gold { animation: ctapulse2 1.8s ease-in-out infinite; }
+.btn:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .btn-primary, .btn-red, .btn-outline, .btn-gold { animation: none; } }

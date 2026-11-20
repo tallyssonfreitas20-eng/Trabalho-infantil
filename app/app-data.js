@@ -11,6 +11,7 @@ window.APP = {
      Aqui ficam só os "hashes" (impressões digitais) dos códigos.
      Os códigos verdadeiros NÃO ficam no site. */
   acessos: {
+    basico: 'e9cf5518a77c0559c1f11691b465fac41c2cd3ba2ad491c29daa25a0ba1a9af8',
     premium: '46f95c1e78aa084031c045edf4aafbd767888bcce76db072894d13c8add0bda4',
     cena: '9d4324d646db5632c169be0e028b305c84f33e836d35acbc6da801c7eed141c3'
   },

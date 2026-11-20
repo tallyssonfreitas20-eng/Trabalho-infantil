@@ -419,9 +419,10 @@
     const h = await sha(code);
     const k = Object.keys(A.acessos).find((key) => A.acessos[key] === h);
     if (!k) { if (!silent) toast('<b>Código não reconhecido</b>'); return false; }
-    S.unlocks = Object.assign({}, S.unlocks, { [k]: today() }); save();
+    S.unlocks = Object.assign({}, S.unlocks, { [k]: today(), basico: (S.unlocks && S.unlocks.basico) || today() }); save();
+    if (k === 'basico' || !S.onboarded) { $('#gate') && ($('#gate').hidden = true); boot(); if (k === 'basico') return true; }
     confetti();
-    modal(`${mascot('wow', 'm-big')}<p class="kick">Acesso liberado!</p><h2>${k === 'premium' ? 'Bônus do Kit Premium' : 'A Bíblia em Cena'}</h2><p>Já está tudo na aba <b>Extras</b>.</p><button class="btn btn-red" data-close data-gox>Abrir Extras</button>`);
+    modal(`${mascot('wow', 'm-big')}<p class="kick">Acesso liberado!</p><h2>${k === 'premium' ? 'Kit Premium + bônus' : 'A Bíblia em Cena'}</h2><p>Já está tudo na aba <b>Extras</b>.</p><button class="btn btn-red" data-close data-gox>Abrir Extras</button>`);
     const g = $('[data-gox]'); if (g) g.onclick = () => { tab = 'extras'; render(); };
     return true;
   }
@@ -543,12 +544,17 @@
     s1();
   }
 
+  function gate() {
+    const g = $('#gate'); g.hidden = false;
+    g.innerHTML = `<div class="ob">${mascot('think', 'm-mid')}<h1>Área exclusiva para compradores</h1><p>Este app é liberado para quem comprou o <b>Kit Básico</b> ou o <b>Kit Premium</b>. O link de acesso chega no seu e-mail logo após a compra.</p><label class="ob-l">Já comprou? Digite o código do seu e-mail<input id="gcode" placeholder="Ex.: BASICO-XXXXXXXX" autocapitalize="characters"></label><button class="btn btn-red btn-block" id="gbtn">Entrar</button><a class="btn btn-ghost btn-block" href="../">Conhecer o produto</a></div>`;
+    $('#gbtn').onclick = async () => { if (await tryCode($('#gcode').value)) { g.hidden = true; } };
+  }
   function boot() {
     tab = 'inicio';
+    if (!unlocked('basico')) { renderTop(); $('#view').innerHTML = ''; gate(); return; }
     if (!S.onboarded) { renderTop(); $('#view').innerHTML = ''; onboarding(); } else { ensureDay(); render(); }
   }
-  boot();
-  readHashCode();
+  readHashCode().then(() => boot());
   window.addEventListener('hashchange', readHashCode);
 
   /* PWA: service worker (só funciona publicado em https, fora de iframes) */

@@ -389,3 +389,5 @@ p { margin: 0 0 .6em; }
 .line.narr b { color: var(--muted); }
 .line.narr p { font-style: italic; }
 .msg { background: #F3ECFB; }
+
+#gate { z-index: 75; }
