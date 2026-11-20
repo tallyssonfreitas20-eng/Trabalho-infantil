@@ -9,8 +9,8 @@ window.CONFIG = {
   /* PLANOS — preços e links de checkout (edite só aqui).
      Enquanto o link estiver vazio, o botão mostra um aviso para configurar. */
   planos: {
-    basico:  { nome: 'Kit Básico',  preco: 5.90,  checkoutUrl: '' },
-    premium: { nome: 'Kit Premium', preco: 19.90, checkoutUrl: '' }
+    basico:  { nome: 'Kit Básico',  preco: 5.90,  checkoutUrl: 'https://pay.cakto.com.br/wiuua4h_1349756' },
+    premium: { nome: 'Kit Premium', preco: 19.90, checkoutUrl: 'https://pay.cakto.com.br/hdg3zzc_1349762' }
   },
   precoNota: 'Pagamento único · sem mensalidade',
   formasPagamento: 'Pix, cartão ou boleto (conforme a plataforma de pagamento)',
