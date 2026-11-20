@@ -1,12 +1,11 @@
-/* Service worker: guarda o app para funcionar offline */
-const CACHE = 'dedoches-v3';
-const CORE = ['./', 'index.html', 'app.css', 'app.js', 'app-data.js', 'config.js', 'puppets.js', 'catalogo.js', 'bonus-conteudo.js', 'cena-conteudo.js', 'imprimir.html', 'manifest.webmanifest', 'img/icons/icon-192.png'];
-self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())); });
+/* Service worker: usa sempre a versão mais nova quando há internet; offline, usa a cópia guardada */
+const CACHE = 'dedoches-v4';
+self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
-    if (res.ok && new URL(e.request.url).origin === location.origin) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
+  if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
+  e.respondWith(fetch(e.request).then((res) => {
+    if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
     return res;
-  }).catch(() => caches.match('index.html'))));
+  }).catch(() => caches.match(e.request).then((hit) => hit || caches.match('index.html'))));
 });
