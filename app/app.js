@@ -283,7 +283,7 @@
           ${S.done[id] ? '<span class="done-stamp">Concluído ✓</span>' : ''}
           <div class="mold-info"><p class="kick">Molde ${String(x.ci * 10 + x.pi + 1).padStart(3, '0')} · Folha ${CAT[x.ci].folha}</p><b>${esc(x.name)}</b><span>📖 ${esc(ref)}</span>
             <a class="btn btn-red btn-block" href="${esc(printUrl)}" target="_blank" rel="noopener">🖨️ Imprimir este molde</a>
-            <a class="btn btn-ghost btn-block" href="${esc(A.pdfFolhas)}" target="_blank" rel="noopener">📄 PDF com as 10 folhas</a></div>
+</div>
         </div>
 
         <div class="prog"><div class="pbar"><i style="width:${nDone * 20}%"></i></div><span>${nDone === 5 ? 'Tudo pronto!' : `Passo ${Math.min(5, nDone + 1)} de 5`}</span></div>

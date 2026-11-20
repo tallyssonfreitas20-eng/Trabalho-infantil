@@ -278,7 +278,7 @@ window.CONFIG = {
   faq: [
     ['Nunca costurei. Consigo fazer?', 'Sim. Os personagens foram pensados para iniciantes: todos partem de uma mesma estrutura-base simples, e o que muda são as roupas, os rostos, os cabelos e os acessórios. As instruções ilustradas mostram a montagem passo a passo. Comece pelos personagens mais simples e, depois do primeiro, os próximos ficam cada vez mais naturais.'],
     ['Preciso de máquina de costura?', 'Não. Os projetos são pensados para costura manual, com agulha e linha.'],
-    ['Como imprimo os moldes?', 'No app, cada personagem tem o botão "Imprimir este molde". Você também pode baixar o PDF com as 10 folhas completas. Dá para imprimir em impressora comum, em papel A4, ou numa papelaria. Cada molde indica o tamanho correto de impressão.'],
+    ['Como imprimo os moldes?', 'No app, cada personagem tem o botão "Imprimir este molde". Dá para imprimir em impressora comum, em papel A4, ou numa papelaria. Cada molde indica o tamanho correto de impressão.'],
     ['Quais materiais vou precisar?', 'Basicamente feltro em cores variadas, linha, agulha de mão, tesoura e caneta ou giz para marcar o feltro. Cola de tecido e pequenos detalhes para os rostos são opcionais. A lista completa vem no material.'],
     ['Posso usar na catequese e na paróquia?', 'Pode e deve! Os dedoches foram pensados justamente para encontros de catequese, atividades infantis, encenações e ações de evangelização.'],
     ['Posso vender os dedoches que eu fizer?', 'Sim. Você pode vender as peças físicas que confeccionar, avulsas ou em kits. O que não é permitido é revender, compartilhar ou distribuir os moldes digitais (os arquivos em PDF).'],
