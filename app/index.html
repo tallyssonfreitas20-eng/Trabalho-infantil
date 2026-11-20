@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dedoches Bíblicos · App</title>
+  <meta name="description" content="Aprenda a confeccionar os 100 dedoches bíblicos em feltro passo a passo, com trilha gamificada, quiz da fé e ateliê de vendas.">
+  <meta name="theme-color" content="#1A355F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Dedoches">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="img/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="img/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top" id="top"></header>
+    <main id="view" class="view"></main>
+    <nav class="tabs" aria-label="Menu">
+      <button class="tab" data-tab="inicio"><span>🏠</span>Início</button>
+      <button class="tab" data-tab="trilha"><span>🧵</span>Trilha</button>
+      <button class="tab" data-tab="escola"><span>📖</span>Escola</button>
+      <button class="tab" data-tab="atelie"><span>🧺</span>Ateliê</button>
+      <button class="tab" data-tab="perfil"><span>🏅</span>Perfil</button>
+    </nav>
+  </div>
+  <div id="sheet" class="sheet" hidden></div>
+  <div id="modal" class="modal" hidden></div>
+  <div id="onb" class="onb" hidden></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <div id="fx" class="fx" aria-hidden="true"></div>
+  <script src="config.js"></script>
+  <script src="puppets.js"></script>
+  <script src="app-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
