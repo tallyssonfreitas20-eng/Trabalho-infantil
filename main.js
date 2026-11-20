@@ -61,7 +61,7 @@
   $('#mq-cards').innerHTML = mq(C.carrosselCartoes, 'mq-card');
   $$('#mq-pages figure:nth-child(n+' + (C.carrosselPaginas.length + 1) + '), #mq-cards figure:nth-child(n+' + (C.carrosselCartoes.length + 1) + ')').forEach((f) => f.setAttribute('aria-hidden', 'true'));
 
-  $('#all-list').innerHTML = C.colecoes.map((c, ci) => `<div><h4>${String(ci + 1).padStart(2, '0')} · ${esc(c.titulo)} <small>${c.personagens.length}</small></h4><p>${c.personagens.map((p) => esc(p[0])).join(' · ')}</p></div>`).join('');
+  $('#all-list').innerHTML = (window.CATALOGO || []).map((f) => `<div><h4>Folha ${f.folha} · ${esc(f.titulo)} <small>${f.itens.length}</small></h4><p>${f.itens.map((i) => esc(i[0])).join(' · ')}</p></div>`).join('');
 
   /* ---------- 3. Antes e depois ---------- */
   $('#ba2').innerHTML = (C.imagens.antesDepois || []).map((src, i) => `<figure><img src="${esc(src)}" alt="Antes: peças cortadas do molde. Depois: dedoche pronto para encenar" loading="lazy"></figure>`).join('');

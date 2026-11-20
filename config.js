@@ -278,14 +278,14 @@ window.CONFIG = {
   faq: [
     ['Nunca costurei. Consigo fazer?', 'Sim. Os personagens foram pensados para iniciantes: todos partem de uma mesma estrutura-base simples, e o que muda são as roupas, os rostos, os cabelos e os acessórios. As instruções ilustradas mostram a montagem passo a passo. Comece pelos personagens mais simples e, depois do primeiro, os próximos ficam cada vez mais naturais.'],
     ['Preciso de máquina de costura?', 'Não. Os projetos são pensados para costura manual, com agulha e linha.'],
-    ['Como imprimo os moldes?', 'Os moldes vêm em PDF. Você pode imprimir em uma impressora comum, em papel A4, ou numa papelaria/gráfica rápida. Cada molde indica o tamanho correto de impressão.'],
+    ['Como imprimo os moldes?', 'No app, cada personagem tem o botão "Imprimir este molde". Você também pode baixar o PDF com as 10 folhas completas. Dá para imprimir em impressora comum, em papel A4, ou numa papelaria. Cada molde indica o tamanho correto de impressão.'],
     ['Quais materiais vou precisar?', 'Basicamente feltro em cores variadas, linha, agulha de mão, tesoura e caneta ou giz para marcar o feltro. Cola de tecido e pequenos detalhes para os rostos são opcionais. A lista completa vem no material.'],
     ['Posso usar na catequese e na paróquia?', 'Pode e deve! Os dedoches foram pensados justamente para encontros de catequese, atividades infantis, encenações e ações de evangelização.'],
     ['Posso vender os dedoches que eu fizer?', 'Sim. Você pode vender as peças físicas que confeccionar, avulsas ou em kits. O que não é permitido é revender, compartilhar ou distribuir os moldes digitais (os arquivos em PDF).'],
     ['Qual a diferença entre o Kit Básico e o Kit Premium?', 'Os dois trazem os 100 moldes com paleta de cores, lista de materiais, referência do personagem pronto e passo a passo ilustrado. O Premium traz tudo isso e mais 4 bônus: Guia de Montagem e Produção, Catálogo de Kits para Venda, Guia de Precificação e Lucro, e Guia de Embalagens e Apresentação.'],
-    ['Vou receber os bonecos prontos em casa?', 'Não. Este é um produto 100% digital: você recebe os moldes em PDF e as instruções para confeccionar os personagens. Nenhum item físico é enviado.'],
-    ['Como recebo o acesso?', 'Após a confirmação do pagamento, você recebe o acesso aos arquivos pelo e-mail cadastrado na compra. Pagamentos por Pix e cartão costumam ser confirmados rapidamente; boleto pode levar alguns dias úteis.'],
+    ['Vou receber os bonecos prontos em casa?', 'Não. Este é um produto 100% digital: você recebe o acesso ao app, com os moldes para imprimir e as instruções para confeccionar os personagens. Nenhum item físico é enviado.'],
+    ['Como recebo o acesso?', 'Após a confirmação do pagamento, você recebe pelo e-mail o link do app Dedoches Bíblicos. Pagamentos por Pix e cartão costumam ser confirmados rapidamente; boleto pode levar alguns dias úteis.'],
     ['E se eu não gostar?', 'Você tem 7 dias de garantia. Se não ficar satisfeita, é só pedir o reembolso pela plataforma de pagamento, conforme as condições aplicáveis.'],
-    ['O livro de histórias para encenação está incluído?', 'Não. O Kit Básico traz os 100 moldes com instruções, e o Kit Premium traz também os 4 bônus apresentados nesta página. No checkout pode aparecer um complemento opcional, vendido separadamente, com roteiros de encenação. Você decide se quer ou não adicioná-lo.']
+    ['O que é A Bíblia em Cena?', 'É um complemento opcional oferecido no checkout: 20 roteiros para contar e encenar histórias da Bíblia com os dedoches, com falas, cenário, mensagem e perguntas para as crianças. Ele aparece dentro do app para quem adicionar na compra.']
   ]
 };

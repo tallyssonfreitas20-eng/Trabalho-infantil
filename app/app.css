@@ -301,3 +301,91 @@ p { margin: 0 0 .6em; }
 @keyframes fall { to { transform: translateY(110vh) rotate(var(--r)); } }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* ---------- Tabs (6) ---------- */
+.tabs { grid-template-columns: repeat(6, 1fr); }
+.tab { font-size: .62rem; }
+.tab span { font-size: 1.2rem; }
+
+/* ---------- Avatares e molde ---------- */
+.av-cell { width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; transform: scale(1.35); transform-origin: 50% 0; background: #fff; }
+.node-av > img.av-cell { position: relative; }
+.mold-card { position: relative; display: grid; grid-template-columns: 46% 1fr; gap: 12px; background: #fff; border: 3px solid var(--uc); border-radius: 20px; padding: 10px; margin-bottom: 14px; overflow: hidden; }
+.mold-img { border: 0; padding: 0; background: none; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+.mold-img img { width: 100%; display: block; }
+.mold-img span { position: absolute; right: 6px; bottom: 6px; background: rgba(26,53,95,.9); color: #fff; font-size: .7rem; font-weight: 800; padding: 3px 8px; border-radius: 99px; }
+.mold-info { display: flex; flex-direction: column; justify-content: center; }
+.mold-info .kick { margin: 0 0 2px; }
+.mold-info b { font-family: var(--serif); font-size: 1.3rem; color: var(--marian-d); line-height: 1.1; }
+.mold-info > span { font-size: .82rem; font-weight: 800; color: var(--red); margin: 4px 0 4px; }
+.mold-info .btn { font-size: .82rem; padding: 11px 10px; }
+.mold-card .done-stamp { z-index: 2; }
+
+/* ---------- Extras ---------- */
+.xgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.xcard { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 8px; text-align: left; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 8px 18px -14px rgba(0,0,0,.4); }
+.xcov { aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--paper); }
+.xcov img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.xcard b { font-size: .84rem; color: var(--marian-d); line-height: 1.2; }
+.xcard small { font-size: .72rem; color: var(--muted); font-weight: 700; }
+.xcard.locked .xcov, .cena-card.locked .cena-ic { filter: grayscale(1); opacity: .55; }
+.cena-card { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; border: 2px solid #CDB8E6; background: linear-gradient(135deg, #fff, #F3ECFB); }
+.cena-ic { font-size: 2.6rem; flex: none; }
+.cena-card b { display: block; font-family: var(--serif); color: #4A3268; font-size: 1.15rem; }
+.cena-card span { display: block; font-size: .8rem; color: var(--muted); }
+.cena-card small { display: block; margin-top: 4px; font-weight: 800; font-size: .74rem; color: #6E4E8C; }
+.codebox .cb-row { display: flex; gap: 8px; position: relative; z-index: 1; }
+.codebox input { flex: 1; min-width: 0; font: 800 .95rem var(--sans); padding: 11px 12px; border-radius: 12px; border: 2px solid var(--line); background: var(--cream); text-transform: uppercase; }
+.codebox small { display: block; margin-top: 8px; color: var(--muted); font-size: .74rem; position: relative; z-index: 1; }
+.acc { list-style: none; padding: 0; margin: 0; position: relative; z-index: 1; }
+.acc li { padding: 6px 0; font-weight: 800; color: var(--muted); border-bottom: 1px dashed var(--line); }
+.acc li.ok { color: var(--green); }
+
+/* ---------- Leitor dos bônus ---------- */
+.rd-dots { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.rd-dots i { width: 14px; height: 5px; border-radius: 99px; background: var(--line); }
+.rd-dots i.on { background: var(--red); width: 24px; }
+.rd-page { background: #fff; border-radius: 18px; padding: 20px 18px; border-top: 6px solid var(--bc); box-shadow: 0 12px 26px -18px rgba(0,0,0,.5); position: relative; }
+.rd-page::after { content: ''; position: absolute; inset: 6px; border: 1.2px dashed var(--line); border-radius: 13px; pointer-events: none; }
+.rd-page h2 { font-size: 1.35rem; }
+.rd-page p, .rd-page li { font-size: .92rem; }
+.rd-page ul, .rd-page ol { padding-left: 20px; }
+.rd-page li { margin-bottom: 5px; }
+.rd-page .box, .rd-page .tip, .rd-page .formula { position: relative; z-index: 1; border-radius: 12px; padding: 10px 12px; margin: 10px 0; font-size: .86rem; }
+.rd-page .box { background: #EEF3FA; border-left: 4px solid var(--marian); }
+.rd-page .tip { background: #FFF6DF; border-left: 4px solid var(--gold); }
+.rd-page .tip::before { content: '🐑 Dica da Lãzinha: '; font-weight: 900; }
+.rd-page .formula { background: var(--marian-d); color: #fff; font-weight: 900; text-align: center; font-size: .95rem; }
+.rd-page ul.check { list-style: none; padding: 0; }
+.rd-page ul.check li::before { content: '☐ '; color: var(--green); font-weight: 900; }
+.label-demo { border: 2px dashed var(--gold); border-radius: 12px; padding: 14px; text-align: center; display: grid; gap: 2px; background: #FFFDF8; }
+.label-demo b { font-family: var(--serif); color: var(--marian-d); font-size: 1.05rem; }
+.label-demo span { font-size: .8rem; color: var(--muted); }
+.rd-nav { display: flex; justify-content: space-between; gap: 10px; margin: 14px 0; }
+.rd-nav .btn { flex: 1; }
+.rd-idx summary { cursor: pointer; font-weight: 800; color: var(--marian-d); }
+.rd-idx ol { padding-left: 20px; }
+.rd-idx button { border: 0; background: none; padding: 4px 0; text-align: left; color: var(--marian); font-weight: 700; }
+
+/* ---------- A Bíblia em Cena ---------- */
+.cena-hero { text-align: center; font-size: 3rem; background: linear-gradient(135deg, #6E4E8C, #4A3268); color: #fff; border-radius: 20px; padding: 18px; margin-bottom: 14px; }
+.cena-hero p { font-size: .92rem; margin: 6px 0 0; }
+.cu { padding-left: 20px; margin: 0; position: relative; z-index: 1; font-size: .9rem; }
+.rlist { display: grid; gap: 8px; }
+.rbtn { display: flex; align-items: center; gap: 12px; text-align: left; width: 100%; margin: 0; }
+.rn { flex: none; width: 38px; height: 38px; border-radius: 12px; background: #6E4E8C; color: #fff; font-weight: 900; display: grid; place-items: center; }
+.rbtn b { display: block; color: var(--marian-d); }
+.rbtn small { color: var(--muted); font-size: .76rem; }
+.rbtn i { margin-left: auto; font-style: normal; color: var(--green); font-weight: 900; }
+.rpers { display: flex; flex-wrap: wrap; gap: 6px; position: relative; z-index: 1; }
+.rpers span { display: flex; align-items: center; gap: 6px; background: var(--cream); border: 1px solid var(--line); border-radius: 99px; padding: 3px 10px 3px 3px; font-size: .78rem; font-weight: 800; }
+.rpers img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: 50% 8%; }
+.rcen { font-size: .85rem; margin: 8px 0 0; position: relative; z-index: 1; }
+.script { display: grid; gap: 8px; margin-bottom: 14px; }
+.line { background: #fff; border: 1px solid var(--line); border-radius: 4px 16px 16px 16px; padding: 10px 12px; }
+.line b { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: #6E4E8C; }
+.line p { margin: 2px 0 0; font-size: .95rem; }
+.line.narr { background: var(--paper); border-style: dashed; }
+.line.narr b { color: var(--muted); }
+.line.narr p { font-style: italic; }
+.msg { background: #F3ECFB; }

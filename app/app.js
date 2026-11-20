@@ -10,13 +10,17 @@
   const brl = (v) => (+v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   PP.defs();
 
-  const COLS = C.colecoes;
+  const CAT = window.CATALOGO;
+  const COLS = CAT.map((f) => ({ titulo: f.titulo, personagens: f.itens.map((i) => [i[0], {}]) }));
+  const pad = (n) => String(n).padStart(2, '0');
+  const cellOf = (ci, pi) => `moldes/cells/f${pad(CAT[ci].folha)}_${pad(pi + 1)}.jpg`;
+  const refOf = (ci, pi) => CAT[ci].itens[pi][1];
   const ALL = [];
   COLS.forEach((c, ci) => c.personagens.forEach((p, pi) => ALL.push({ id: `c${ci}p${pi}`, ci, pi, name: p[0], look: p[1] })));
   const byId = Object.fromEntries(ALL.map((x) => [x.id, x]));
-  const COL_COLORS = ['#A3302B', '#2F7A8C', '#9A6B2F', '#7E2E3A', '#2F5D4A', '#2E5592', '#6E4E8C', '#4E7D5B', '#5B4A7A', '#B5733A'];
-  const COL_ICONS = ['⭐', '🌈', '🐫', '🌊', '🪨', '🐟', '🎣', '🍞', '✝️', '🕊️'];
-  const COL_BADGES = ['Presépio Completo', 'Arca Cheia', 'Família de Abraão', 'Rumo à Terra Prometida', 'Coragem de Davi', 'Fé Inabalável', 'Amigos de Jesus', 'Coração Misericordioso', 'Aleluia!', 'Igreja Viva'];
+  const COL_COLORS = CAT.map((f) => f.cor);
+  const COL_ICONS = CAT.map((f) => f.icone);
+  const COL_BADGES = ['Natal Feito à Mão', 'Coragem de Herói', 'Fidelidade de Rute', 'Coroa de Sabedoria', 'Família de Abraão', 'Voz dos Profetas', 'Testemunha dos Milagres', 'Presépio Completo', 'Igreja Viva', 'Terra Prometida'];
 
   /* ---------------- Estado ---------------- */
   const KEY = 'dedoches-app-v1';
@@ -144,8 +148,8 @@
     ['cinco', '🧺', 'Mãos à Obra', 'Concluiu 5 personagens', () => doneCount() >= 5],
     ['vinte', '🎨', 'Ateliê Animado', 'Concluiu 20 personagens', () => doneCount() >= 20],
     ['cinquenta', '🏅', 'Meio Caminho', 'Concluiu 50 personagens', () => doneCount() >= 50],
-    ['cem', '👑', 'Coleção Completa', 'Concluiu os 100 personagens', () => doneCount() >= 100],
-    ...COLS.map((c, ci) => [`col${ci}`, COL_ICONS[ci], COL_BADGES[ci], `Coleção ${c.titulo}`, () => colDone(ci)]),
+    ['cem', '👑', 'Coleção Completa', 'Concluiu os 100 moldes', () => doneCount() >= 100],
+    ...COLS.map((c, ci) => [`col${ci}`, COL_ICONS[ci], COL_BADGES[ci], `Folha ${CAT[ci].folha} · ${c.titulo}`, () => colDone(ci)]),
     ['quiz5', '📖', 'Ouvinte da Palavra', 'Acertou 5 perguntas', () => quizRight() >= 5],
     ['quizall', '🎓', 'Sabedoria', 'Acertou todo o Quiz da Fé', () => quizRight() >= QUIZ_TOTAL],
     ['pontos', '✂️', 'Escola de Pontos', 'Praticou os 3 pontos', () => Object.keys(S.stitches).length >= 3],
@@ -164,10 +168,7 @@
   }
 
   /* ---------------- Visual do personagem ---------------- */
-  const avatar = (x, plain = true) => {
-    const im = A.imgs[x.id];
-    return im && im.card ? `<img src="${esc(im.card)}" alt="" class="av-img" loading="lazy">` : PP.puppet(x.look, { plain, title: x.name });
-  };
+  const avatar = (x) => `<img src="${esc(cellOf(x.ci, x.pi))}" alt="" class="av-cell" loading="lazy">`;
   const palette = (look) => {
     const keys = ['robe', 'cloak', 'veil', 'sash', 'headC', 'hair'];
     const set = []; keys.forEach((k) => { const v = look[k]; if (v && !set.includes(v)) set.push(v); });
@@ -201,7 +202,7 @@
   function renderHome() {
     ensureDay();
     const n = next(), d = S.daily, allOk = MISSIONS.every(([k, t]) => (d[k] || 0) >= t);
-    const presepio = COLS[0].personagens.filter((_, pi) => S.done[`c0p${pi}`]).length, dx = daysToChristmas();
+    const presepio = COLS[7].personagens.filter((_, pi) => S.done[`c7p${pi}`]).length, dx = daysToChristmas();
     const pct = doneCount();
     $('#view').innerHTML = `
       <section class="hello">
@@ -212,7 +213,7 @@
       <section class="card next-card">
         <p class="kick">Continue de onde parou</p>
         <div class="next-row"><div class="next-av">${avatar(n)}</div>
-          <div><b>${esc(n.name)}</b><span>Coleção ${n.ci + 1} · ${esc(COLS[n.ci].titulo)}</span>
+          <div><b>${esc(n.name)}</b><span>Folha ${CAT[n.ci].folha} · ${esc(COLS[n.ci].titulo)}</span>
           <div class="mini-steps">${[0, 1, 2, 3, 4].map((k) => `<i class="${S.steps[n.id + '-' + k] ? 'on' : ''}"></i>`).join('')}</div></div></div>
         <button class="btn btn-red btn-block" data-open="${n.id}">Fazer agora · +80 XP</button>
       </section>
@@ -226,7 +227,7 @@
       <section class="card xmas">
         <div class="xm-star">${PP.star(30, 30, 26, '#F1D58E').replace('<polygon', '<svg viewBox="0 0 60 60"><polygon') + '</svg>'}</div>
         <div><p class="kick light">Especial de Natal</p><b>${dx === 0 ? 'Feliz Natal!' : `Faltam ${dx} dias para o Natal`}</b>
-        <span>Seu presépio de dedoches: ${presepio}/15 personagens</span><div class="xbar"><i style="width:${(presepio / 15) * 100}%"></i></div></div>
+        <span>Seu presépio de dedoches: ${presepio}/10 personagens</span><div class="xbar"><i style="width:${(presepio / 10) * 100}%"></i></div></div>
       </section>
 
       <section class="grid2">
@@ -247,7 +248,7 @@
       COLS.map((c, ci) => {
         const n = c.personagens.length, ok = c.personagens.filter((_, pi) => S.done[`c${ci}p${pi}`]).length;
         return `<section class="unit" style="--uc:${COL_COLORS[ci]}">
-          <header class="unit-h"><div><small>Coleção ${ci + 1}</small><b>${esc(c.titulo)}</b><div class="ubar"><i style="width:${(ok / n) * 100}%"></i></div></div><span class="u-ic">${colDone(ci) ? '🏆' : COL_ICONS[ci]}</span><em>${ok}/${n}</em></header>
+          <header class="unit-h"><div><small>Folha ${CAT[ci].folha} de 10</small><b>${esc(c.titulo)}</b><div class="ubar"><i style="width:${(ok / n) * 100}%"></i></div></div><span class="u-ic">${colDone(ci) ? '🏆' : COL_ICONS[ci]}</span><em>${ok}/${n}</em></header>
           <div class="nodes">${c.personagens.map((p, pi) => {
             const id = `c${ci}p${pi}`, x = byId[id], dn = S.done[id], st = [0, 1, 2, 3, 4].filter((k) => S.steps[id + '-' + k]).length;
             const off = Math.round(Math.sin(pi * 0.9) * 32);
@@ -269,20 +270,21 @@
   ];
 
   function openLesson(id) {
-    const x = byId[id], im = A.imgs[id] || {}, ref = (A.refs[x.ci] || [])[x.pi] || '', h = A.historias[x.ci] || ['', ''], link = (A.linksMoldes || [])[x.ci];
+    const x = byId[id], cell = cellOf(x.ci, x.pi), ref = refOf(x.ci, x.pi), h = A.historias[x.ci] || ['', ''], printUrl = `imprimir.html#f${pad(CAT[x.ci].folha)}_${pad(x.pi + 1)}`;
     bump('story'); renderTop();
     const sh = $('#sheet');
     const body = () => {
       const stepsDone = STEPS.map((_, k) => !!S.steps[id + '-' + k]), nDone = stepsDone.filter(Boolean).length;
       return `
-      <header class="sh-h"><button class="ic-btn" data-x aria-label="Voltar">←</button><div><small>Coleção ${x.ci + 1} · ${esc(COLS[x.ci].titulo)}</small><b>${esc(x.name)}</b></div><span class="sh-xp">${nDone}/5</span></header>
+      <header class="sh-h"><button class="ic-btn" data-x aria-label="Voltar">←</button><div><small>Folha ${CAT[x.ci].folha} · ${esc(COLS[x.ci].titulo)}</small><b>${esc(x.name)}</b></div><span class="sh-xp">${nDone}/5</span></header>
       <div class="sh-body">
-        <div class="hero-pp ${im.page ? 'has-page' : ''}" style="--uc:${COL_COLORS[x.ci]}">
-          ${im.page ? `<button class="page-btn" data-zoom="${esc(im.page)}"><img src="${esc(im.page)}" alt="Página do molde de ${esc(x.name)}"><span>🔍 Ver o molde</span></button>` : `<div class="pp-solo">${im.card ? `<img src="${esc(im.card)}" alt="${esc(x.name)}">` : PP.puppet(x.look, { title: x.name })}</div>`}
+        <div class="mold-card" style="--uc:${COL_COLORS[x.ci]}">
+          <button class="mold-img" data-zoom="${esc(cell)}" aria-label="Ampliar o molde de ${esc(x.name)}"><img src="${esc(cell)}" alt="Molde de ${esc(x.name)}"><span>🔍 Ampliar</span></button>
           ${S.done[id] ? '<span class="done-stamp">Concluído ✓</span>' : ''}
+          <div class="mold-info"><p class="kick">Molde ${String(x.ci * 10 + x.pi + 1).padStart(3, '0')} · Folha ${CAT[x.ci].folha}</p><b>${esc(x.name)}</b><span>📖 ${esc(ref)}</span>
+            <a class="btn btn-red btn-block" href="${esc(printUrl)}" target="_blank" rel="noopener">🖨️ Imprimir este molde</a>
+            <a class="btn btn-ghost btn-block" href="${esc(A.pdfFolhas)}" target="_blank" rel="noopener">📄 PDF com as 10 folhas</a></div>
         </div>
-        ${link ? `<a class="btn btn-blue btn-block" href="${esc(link)}" target="_blank" rel="noopener">📄 Abrir molde em PDF</a>` : ''}
-        <div class="card pal"><p class="kick">Cores sugeridas de feltro</p><div class="sw">${palette(x.look).map(([c, n]) => `<span><i style="background:${c}"></i>${esc(n)}</span>`).join('')}</div><small>As cores exatas estão na página do molde.</small></div>
 
         <div class="prog"><div class="pbar"><i style="width:${nDone * 20}%"></i></div><span>${nDone === 5 ? 'Tudo pronto!' : `Passo ${Math.min(5, nDone + 1)} de 5`}</span></div>
         <ol class="lsteps">${STEPS.map(([t, img, items, tip], k) => `
@@ -408,25 +410,98 @@
     $$('[data-f]').forEach((i) => (i.onchange = () => { a[i.dataset.f] = Math.max(0, parseFloat(i.value.replace(',', '.')) || 0); save(); renderAtelie(); }));
   }
 
-  /* Plano: o link pode trazer #basico ou #premium (fica salvo no aparelho) */
-  function plano() {
-    const h = (location.hash || '').replace('#', '');
-    if (h === 'basico' || h === 'premium') { if (S.plano !== h) { S.plano = h; save(); } }
-    return S.plano || A.plano;
+  /* ---------------- Liberação por código (link da Wiapy) ---------------- */
+  const sha = async (t) => { try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return ''; } };
+  const unlocked = (k) => !!(S.unlocks && S.unlocks[k]);
+  async function tryCode(raw, silent) {
+    const code = String(raw || '').trim().toUpperCase();
+    if (!code) return false;
+    const h = await sha(code);
+    const k = Object.keys(A.acessos).find((key) => A.acessos[key] === h);
+    if (!k) { if (!silent) toast('<b>Código não reconhecido</b>'); return false; }
+    S.unlocks = Object.assign({}, S.unlocks, { [k]: today() }); save();
+    confetti();
+    modal(`${mascot('wow', 'm-big')}<p class="kick">Acesso liberado!</p><h2>${k === 'premium' ? 'Bônus do Kit Premium' : 'A Bíblia em Cena'}</h2><p>Já está tudo na aba <b>Extras</b>.</p><button class="btn btn-red" data-close data-gox>Abrir Extras</button>`);
+    const g = $('[data-gox]'); if (g) g.onclick = () => { tab = 'extras'; render(); };
+    return true;
+  }
+  async function readHashCode() {
+    const m = (location.hash || '').match(/acesso=([A-Za-z0-9-]+)/);
+    if (m) { await tryCode(decodeURIComponent(m[1]), false); try { history.replaceState(null, '', location.pathname); } catch (e) {} }
+  }
+
+  /* ---------------- Extras: bônus e A Bíblia em Cena ---------------- */
+  function codeBox() { return `<div class="card codebox"><p class="kick">Tem um código de acesso?</p><div class="cb-row"><input id="codein" placeholder="Ex.: PREMIUM-XXXXXXXX" autocapitalize="characters" aria-label="Código de acesso"><button class="btn btn-blue" id="codebtn">Liberar</button></div><small>O código vem no link de acesso que você recebeu por e-mail após a compra.</small></div>`; }
+  function renderExtras() {
+    const prem = unlocked('premium'), cena = unlocked('cena'), B = window.BONUS || [], CE = window.CENA;
+    $('#view').innerHTML = `<h1 class="ttl">Extras</h1><p class="sub">Materiais complementares liberados pela sua compra.</p>
+      <p class="kick sec-k">🎁 Bônus do Kit Premium ${prem ? '' : '<span class="pill lock">bloqueado</span>'}</p>
+      <div class="xgrid">${B.map((b, i) => `<button class="xcard ${prem ? '' : 'locked'}" data-bonus="${i}"><span class="xcov">${A.bonusCapas[i] ? `<img src="${esc(A.bonusCapas[i])}" alt="">` : ''}</span><b>${esc(b.titulo)}</b><small>${prem ? `${b.paginas.length} páginas` : '🔒 Kit Premium'}</small></button>`).join('')}</div>
+      <p class="kick sec-k">🎭 Complemento ${cena ? '' : '<span class="pill lock">bloqueado</span>'}</p>
+      <button class="card cena-card ${cena ? '' : 'locked'}" data-cena><span class="cena-ic">🎭</span><div><b>${esc(CE.titulo)}</b><span>${esc(CE.sub)}</span><small>${cena ? `${CE.roteiros.length} roteiros para encenar` : '🔒 Complemento opcional da compra'}</small></div></button>
+      ${prem && cena ? '' : codeBox()}`;
+    $$('[data-bonus]').forEach((b) => (b.onclick = () => unlocked('premium') ? openReader(B[+b.dataset.bonus]) : lockedMsg('premium')));
+    $('[data-cena]').onclick = () => unlocked('cena') ? openCena() : lockedMsg('cena');
+    const cb = $('#codebtn'); if (cb) cb.onclick = async () => { if (await tryCode($('#codein').value)) renderExtras(); };
+  }
+  function lockedMsg(k) {
+    modal(`${mascot('think', 'm-mid')}<h2>${k === 'premium' ? 'Exclusivo do Kit Premium' : 'Complemento A Bíblia em Cena'}</h2><p>${k === 'premium' ? 'Os 4 guias são liberados para quem comprou o Kit Premium.' : 'Os roteiros são liberados para quem adicionou A Bíblia em Cena na compra.'} Se você comprou, abra o link de acesso que chegou no seu e-mail ou digite o código aqui na aba Extras.</p><button class="btn btn-red" data-close>Entendi</button>`);
+  }
+  function openSheet(html, bind) {
+    const sh = $('#sheet'); sh.innerHTML = html; sh.hidden = false; requestAnimationFrame(() => sh.classList.add('in')); sh.scrollTop = 0;
+    $$('[data-x]', sh).forEach((b) => (b.onclick = closeSheet)); bind && bind(sh);
+  }
+  function openReader(b) {
+    let i = 0;
+    const page = () => `<header class="sh-h" style="background:${b.cor}"><button class="ic-btn" data-x aria-label="Voltar">←</button><div><small>Bônus · ${i + 1} de ${b.paginas.length}</small><b>${esc(b.titulo)}</b></div></header>
+      <div class="sh-body reader"><div class="rd-dots">${b.paginas.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+      <article class="rd-page" style="--bc:${b.cor}"><p class="kick">${esc(b.sub)}</p><h2>${esc(b.paginas[i].t)}</h2>${b.paginas[i].h}</article>
+      <div class="rd-nav"><button class="btn btn-ghost" data-pv ${i === 0 ? 'disabled' : ''}>← Anterior</button><button class="btn btn-red" data-nx>${i === b.paginas.length - 1 ? 'Concluir ✓' : 'Próxima →'}</button></div>
+      <details class="rd-idx"><summary>Índice</summary><ol>${b.paginas.map((p, k) => `<li><button data-go="${k}">${esc(p.t)}</button></li>`).join('')}</ol></details></div>`;
+    const paint = () => openSheet(page(), (sh) => {
+      $('[data-pv]', sh).onclick = () => { i = Math.max(0, i - 1); paint(); };
+      $('[data-nx]', sh).onclick = () => { if (i < b.paginas.length - 1) { i++; paint(); } else { if (!S.read) S.read = {}; if (!S.read[b.id]) { S.read[b.id] = today(); save(); addXP(25, 'bônus lido'); } closeSheet(); } };
+      $$('[data-go]', sh).forEach((g) => (g.onclick = () => { i = +g.dataset.go; paint(); }));
+    });
+    paint();
+  }
+  function openCena() {
+    const CE = window.CENA;
+    openSheet(`<header class="sh-h" style="background:#6E4E8C"><button class="ic-btn" data-x aria-label="Voltar">←</button><div><small>Complemento</small><b>${esc(CE.titulo)}</b></div></header>
+      <div class="sh-body"><div class="cena-hero">🎭<p>${esc(CE.intro)}</p></div>
+      <div class="card"><p class="kick">Como usar</p><ol class="cu">${CE.comoUsar.map((c) => `<li>${esc(c)}</li>`).join('')}</ol></div>
+      <div class="rlist">${CE.roteiros.map((r, k) => `<button class="card rbtn" data-r="${k}"><span class="rn">${String(k + 1).padStart(2, '0')}</span><div><b>${esc(r.t)}</b><small>📖 ${esc(r.ref)} · ${r.pers.length} personagens</small></div>${S.cena && S.cena[k] ? '<i>✓</i>' : ''}</button>`).join('')}</div></div>`,
+      (sh) => $$('[data-r]', sh).forEach((b) => (b.onclick = () => openRoteiro(+b.dataset.r))));
+  }
+  function openRoteiro(k) {
+    const r = window.CENA.roteiros[k];
+    const find = (n) => ALL.find((x) => x.name === n || x.name.startsWith(n + ',') || n.startsWith(x.name));
+    openSheet(`<header class="sh-h" style="background:#6E4E8C"><button class="ic-btn" data-back aria-label="Voltar">←</button><div><small>Roteiro ${k + 1} · ${esc(r.ref)}</small><b>${esc(r.t)}</b></div></header>
+      <div class="sh-body roteiro">
+        <div class="card"><p class="kick">Personagens</p><div class="rpers">${r.pers.map((n) => { const x = find(n); return `<span>${x ? `<img src="${esc(cellOf(x.ci, x.pi))}" alt="">` : ''}${esc(n)}</span>`; }).join('')}</div><p class="rcen"><b>Cenário:</b> ${esc(r.cenario)}</p></div>
+        <div class="script">${r.cenas.map(([q, f]) => `<div class="line ${q.startsWith('Narrador') ? 'narr' : ''}"><b>${esc(q)}</b><p>${esc(f)}</p></div>`).join('')}</div>
+        <div class="card msg"><p class="kick">Mensagem</p><p>${esc(r.msg)}</p></div>
+        <div class="card"><p class="kick">Perguntas para as crianças</p><ol class="cu">${r.perg.map((q) => `<li>${esc(q)}</li>`).join('')}</ol></div>
+        <button class="btn btn-green btn-block" data-done>${S.cena && S.cena[k] ? 'Encenado ✓' : 'Encenamos esta história! · +20 XP'}</button>
+      </div>`, (sh) => {
+      $('[data-back]', sh).onclick = () => openCena();
+      $('[data-done]', sh).onclick = () => { if (!S.cena) S.cena = {}; if (!S.cena[k]) { S.cena[k] = today(); save(); confetti(); addXP(20, 'história encenada'); } openCena(); };
+    });
   }
 
   /* ---------------- Perfil ---------------- */
   let installEvt = null;
   window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; });
   function renderPerfil() {
-    const li = levelOf(S.xp), prem = plano() === 'premium';
+    const li = levelOf(S.xp), prem = unlocked('premium');
     $('#view').innerHTML = `
       <section class="prof">${mascot('happy', 'm-mid')}<div><input id="pname" value="${esc(S.name)}" placeholder="Seu nome" aria-label="Seu nome"><small>${LEVELS[li][0]} · ${S.xp} XP</small></div></section>
       <section class="card"><p class="kick">Seus níveis</p><ol class="ladder">${LEVELS.map((l, k) => `<li class="${k <= li ? 'on' : ''} ${k === li ? 'cur' : ''}"><span>${k + 1}</span><b>${l[0]}</b><small>${l[1]} XP</small></li>`).join('')}</ol></section>
       <section class="card"><div class="row-sb"><p class="kick">Conquistas</p><span class="pill">${Object.keys(S.badges).length}/${BADGES.length}</span></div>
         <div class="badges">${BADGES.map((b) => `<div class="bdg ${S.badges[b[0]] ? 'on' : ''}" title="${esc(b[3])}"><span>${S.badges[b[0]] ? b[1] : '🔒'}</span><b>${esc(b[2])}</b></div>`).join('')}</div></section>
-      <section class="card"><div class="row-sb"><p class="kick">Bônus do Kit Premium</p><span class="pill ${prem ? '' : 'lock'}">${prem ? 'Liberado' : 'Premium'}</span></div>
-        <div class="bon">${C.bonus.map((b, i) => `<div class="bon-i ${prem ? '' : 'locked'}">${A.bonusCapas[i] ? `<img src="${esc(A.bonusCapas[i])}" alt="">` : `<div class="bon-ph" style="background:${b.cor}">🎁</div>`}<div><b>${esc(b.titulo)}</b>${prem ? (A.linksBonus[i] ? `<a href="${esc(A.linksBonus[i])}" target="_blank" rel="noopener">Abrir PDF →</a>` : '<small>Link do PDF a configurar</small>') : '<small>🔒 Disponível no Kit Premium</small>'}</div></div>`).join('')}</div></section>
+      <section class="card"><div class="row-sb"><p class="kick">Seus acessos</p></div>
+        <ul class="acc"><li class="ok">✓ 100 moldes e passo a passo</li><li class="${prem ? 'ok' : ''}">${prem ? '✓' : '🔒'} Bônus do Kit Premium</li><li class="${unlocked('cena') ? 'ok' : ''}">${unlocked('cena') ? '✓' : '🔒'} A Bíblia em Cena</li></ul>
+        <button class="btn btn-ghost btn-block" data-tab="extras">Abrir Extras</button></section>
       <section class="card"><p class="kick">App</p>
         <button class="btn btn-blue btn-block" id="inst">📲 Instalar na tela inicial</button>
         ${A.suporte ? `<p class="sup">Suporte: ${esc(A.suporte)}</p>` : ''}
@@ -444,7 +519,7 @@
 
   /* ---------------- Navegação ---------------- */
   let tab = 'inicio';
-  const VIEWS = { inicio: renderHome, trilha: renderPath, escola: renderEscola, atelie: renderAtelie, perfil: renderPerfil };
+  const VIEWS = { inicio: renderHome, trilha: renderPath, escola: renderEscola, extras: renderExtras, atelie: renderAtelie, perfil: renderPerfil };
   function render(goto) {
     renderTop(); VIEWS[tab](goto);
     $$('.tab').forEach((t) => t.setAttribute('aria-current', t.dataset.tab === tab ? 'page' : 'false'));
@@ -457,13 +532,13 @@
   /* ---------------- Boas-vindas ---------------- */
   function onboarding() {
     const ob = $('#onb'); ob.hidden = false;
-    const s1 = () => { ob.innerHTML = `<div class="ob">${mascot('wave', 'm-big')}<h1>Oi! Eu sou a Lãzinha 🐑</h1><p>Vou te acompanhar na confecção dos <b>100 dedoches bíblicos</b>, passo a passo, sem pressa.</p><label class="ob-l">Como posso te chamar?<input id="obn" placeholder="Seu nome" autocomplete="given-name"></label><button class="btn btn-red btn-block" id="ob1">Continuar</button></div>`; $('#ob1').onclick = () => { S.name = ($('#obn').value || '').trim(); s2(); }; };
+    const s1 = () => { ob.innerHTML = `<div class="ob">${mascot('wave', 'm-big')}<h1>Oi! Eu sou a Lãzinha 🐑</h1><p>Vou te acompanhar na confecção dos <b>100 moldes de dedoches bíblicos</b>, passo a passo, sem pressa.</p><label class="ob-l">Como posso te chamar?<input id="obn" placeholder="Seu nome" autocomplete="given-name"></label><button class="btn btn-red btn-block" id="ob1">Continuar</button></div>`; $('#ob1').onclick = () => { S.name = ($('#obn').value || '').trim(); s2(); }; };
     const s2 = () => { ob.innerHTML = `<div class="ob">${mascot('think', 'm-mid')}<h1>O que te trouxe aqui${S.name ? ', ' + esc(S.name) : ''}?</h1><div class="goals">
         <button data-g="ensinar"><span>⛪</span><b>Ensinar na catequese</b><small>Personagens para os encontros</small></button>
         <button data-g="familia"><span>👨‍👩‍👧</span><b>Brincar em família</b><small>Histórias com filhos e netos</small></button>
         <button data-g="vender"><span>🧺</span><b>Vender meus kits</b><small>Renda extra com o feltro</small></button></div></div>`;
       $$('[data-g]', ob).forEach((b) => (b.onclick = () => { S.goal = b.dataset.g; s3(); })); };
-    const s3 = () => { ob.innerHTML = `<div class="ob">${mascot('wow', 'm-big')}<h1>Sua primeira missão: o Presépio!</h1><p>Cada passo marcado vale <b>XP</b>. Termine personagens, suba de nível e ganhe conquistas. O Natal está chegando, vamos começar pela <b>Maria</b>?</p><button class="btn btn-red btn-block" id="ob3">Começar · +20 XP</button></div>`;
+    const s3 = () => { ob.innerHTML = `<div class="ob">${mascot('wow', 'm-big')}<h1>Sua primeira missão: o Presépio!</h1><p>Cada passo marcado vale <b>XP</b>. Termine personagens, suba de nível e ganhe conquistas. O Natal está chegando, vamos começar pela folha do <b>Natal</b>?</p><button class="btn btn-red btn-block" id="ob3">Começar · +20 XP</button></div>`;
       $('#ob3').onclick = () => { S.onboarded = true; ob.hidden = true; ensureDay(); save(); confetti(); addXP(20, 'boas-vindas'); render(); }; };
     s1();
   }
@@ -472,8 +547,9 @@
     tab = 'inicio';
     if (!S.onboarded) { renderTop(); $('#view').innerHTML = ''; onboarding(); } else { ensureDay(); render(); }
   }
-  plano();
   boot();
+  readHashCode();
+  window.addEventListener('hashchange', readHashCode);
 
   /* PWA: service worker (só funciona publicado em https, fora de iframes) */
   try { if ('serviceWorker' in navigator && location.protocol === 'https:' && window.top === window.self) navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
