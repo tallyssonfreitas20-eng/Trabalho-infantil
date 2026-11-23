@@ -57,7 +57,7 @@ a { color: var(--marian); }
 .btn-block { width: 100%; }
 
 /* ---------- Topo ---------- */
-.topbar { background: var(--night); color: var(--gold-l); text-align: center; font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; position: sticky; top: 0; z-index: 40; }
+.topbar { display: block; text-decoration: none; background: var(--red, #A3302B); color: #fff; text-align: center; font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; position: sticky; top: 0; z-index: 40; }
 
 /* ---------- Espaços de imagem ---------- */
 .slot { position: relative; border-radius: var(--r); overflow: hidden; background: var(--paper); border: 1px solid var(--line); }
@@ -477,3 +477,7 @@ a { color: var(--marian); }
 .btn-gold { animation: ctapulse2 1.8s ease-in-out infinite; }
 .btn:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .btn-primary, .btn-red, .btn-outline, .btn-gold { animation: none; } }
+
+.topbar .tb-cta { display: inline-block; margin-left: 8px; background: #fff; color: var(--red, #A3302B); border-radius: 999px; padding: 2px 9px; letter-spacing: .04em; }
+#garantia .guarantee { margin-top: 0; background: #fff; }
+@media (max-width: 560px) { .topbar .tb-x { display: none; } .topbar { font-size: .64rem; letter-spacing: .06em; padding: 8px 10px; } }
